@@ -4,7 +4,7 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 import router from './router'
-import './styles.css'
+import './style.css'
 import { useAuthStore } from './stores/auth'
 import { useThemeStore } from './stores/theme'
 

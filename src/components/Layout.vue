@@ -1,11 +1,17 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+  <div
+    class="min-h-screen bg-background"
+  >
     <!-- Sidebar -->
     <aside class="fixed left-0 top-0 z-40 h-screen w-64 transition-transform">
-      <div class="h-full overflow-y-auto bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-r border-gray-200 dark:border-gray-800 shadow-lg">
+      <div
+        class="h-full overflow-y-auto bg-card/80 backdrop-blur-xl border-r border-border shadow-lg"
+      >
         <!-- Logo -->
-        <div class="flex h-16 items-center border-b border-gray-200 dark:border-gray-800 px-6">
-          <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <div class="flex h-16 items-center border-b border-border px-6">
+          <h1
+            class="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+          >
             NeuronAI
           </h1>
         </div>
@@ -15,15 +21,15 @@
           <router-link
             v-for="item in navigationItems"
             :key="item.path"
-            :to="item.path"
             v-slot="{ isActive }"
+            :to="item.path"
           >
             <div
               :class="[
                 'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all',
                 isActive
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md'
+                  : 'text-foreground hover:bg-muted',
               ]"
             >
               <component :is="item.icon" :class="['h-5 w-5', isActive ? 'text-white' : '']" />
@@ -34,14 +40,16 @@
 
         <!-- Balance Card -->
         <div class="mx-3 my-4">
-          <Card class="bg-gradient-to-br from-blue-500/10 to-purple-500/10 dark:from-blue-500/20 dark:to-purple-500/20 border-blue-200 dark:border-blue-800">
+          <Card
+            class="bg-gradient-to-br from-primary/10 to-accent/10 border-primary/20"
+          >
             <CardHeader class="pb-3">
-              <CardTitle class="text-sm font-medium text-gray-600 dark:text-gray-400">
+              <CardTitle class="text-sm font-medium text-muted-foreground">
                 Balance
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div class="text-2xl font-bold text-gray-900 dark:text-white">
+              <div class="text-2xl font-bold text-foreground">
                 {{ formatCurrency(authStore.user?.balance || 0) }}
               </div>
             </CardContent>
@@ -49,38 +57,39 @@
         </div>
 
         <!-- Bottom Section -->
-        <div class="absolute bottom-0 left-0 right-0 border-t border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl">
+        <div
+          class="absolute bottom-0 left-0 right-0 border-t border-border bg-card/80 backdrop-blur-xl"
+        >
           <div class="p-4 space-y-3">
             <!-- Theme Toggle -->
             <div class="flex items-center justify-between px-3 py-2">
               <div class="flex items-center gap-2">
-                <Sun class="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                <span class="text-sm text-gray-700 dark:text-gray-300">Dark Mode</span>
+                <Sun class="h-4 w-4 text-muted-foreground" />
+                <span class="text-sm text-foreground">Dark Mode</span>
               </div>
-              <Switch
-                :checked="themeStore.isDark"
-                @update:checked="themeStore.toggleTheme"
-              />
+              <Switch :model-value="themeStore.isDark" @update:model-value="themeStore.toggleTheme" />
             </div>
 
             <!-- User Menu -->
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
-                <Button variant="ghost" class="w-full justify-start gap-3 px-3">
+                <Button class="w-full justify-start gap-3 px-3" variant="ghost">
                   <Avatar class="h-8 w-8">
-                    <AvatarFallback class="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs">
+                    <AvatarFallback
+                      class="bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs"
+                    >
                       {{ getUserInitials(authStore.user?.email || '') }}
                     </AvatarFallback>
                   </Avatar>
                   <div class="flex flex-col items-start text-left flex-1 min-w-0">
-                    <span class="text-sm font-medium text-gray-900 dark:text-white truncate w-full">
+                    <span class="text-sm font-medium text-foreground truncate w-full">
                       {{ authStore.user?.full_name || 'User' }}
                     </span>
-                    <span class="text-xs text-gray-500 dark:text-gray-400 truncate w-full">
+                    <span class="text-xs text-muted-foreground truncate w-full">
                       {{ authStore.user?.email }}
                     </span>
                   </div>
-                  <ChevronDown class="h-4 w-4 text-gray-500" />
+                  <ChevronDown class="h-4 w-4 text-muted-foreground" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" class="w-56">
@@ -89,7 +98,7 @@
                   <span>Profile</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem @click="handleLogout" class="text-red-600 dark:text-red-400">
+                <DropdownMenuItem class="text-destructive" @click="handleLogout">
                   <LogOut class="mr-2 h-4 w-4" />
                   <span>Logout</span>
                 </DropdownMenuItem>
@@ -109,7 +118,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useThemeStore } from '@/stores/theme'
@@ -125,15 +134,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
-  LayoutDashboard,
-  Key,
   Activity,
+  ChevronDown,
   CreditCard,
-  PlayCircle,
-  User,
+  Key,
+  LayoutDashboard,
   LogOut,
+  PlayCircle,
   Sun,
-  ChevronDown
+  User,
 } from 'lucide-vue-next'
 
 const router = useRouter()
@@ -149,10 +158,12 @@ const navigationItems = [
 ]
 
 function formatCurrency(amount: number) {
-  return new Intl.NumberFormat('uz-UZ', {
-    style: 'decimal',
-    minimumFractionDigits: 0,
-  }).format(amount) + ' UZS'
+  return (
+    new Intl.NumberFormat('uz-UZ', {
+      style: 'decimal',
+      minimumFractionDigits: 0,
+    }).format(amount) + ' UZS'
+  )
 }
 
 function getUserInitials(email: string) {

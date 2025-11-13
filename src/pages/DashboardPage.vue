@@ -2,20 +2,20 @@
   <Layout>
     <div class="space-y-6">
       <div class="flex items-center justify-between">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+        <h1 class="text-3xl font-bold text-foreground">Dashboard</h1>
       </div>
 
       <!-- Balance Card -->
-      <Card class="bg-gradient-to-br from-blue-500/10 to-purple-500/10 dark:from-blue-500/20 dark:to-purple-500/20 border-blue-200 dark:border-blue-800">
+      <Card class="bg-gradient-to-br from-primary/10 to-accent/10 border-primary/20">
         <CardHeader>
-          <CardTitle class="text-gray-600 dark:text-gray-400 text-base font-medium">Current Balance</CardTitle>
+          <CardTitle class="text-muted-foreground text-base font-medium">Current Balance</CardTitle>
         </CardHeader>
         <CardContent>
           <div class="flex items-center justify-between">
-            <p class="text-4xl font-bold text-gray-900 dark:text-white">
+            <p class="text-4xl font-bold text-foreground">
               {{ formatCurrency(authStore.user?.balance || 0) }}
             </p>
-            <Button @click="showTopupModal = true" class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
+            <Button @click="showTopupModal = true" class="bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90">
               Top Up Balance
             </Button>
           </div>
@@ -24,39 +24,39 @@
 
       <!-- Stats Grid -->
       <div v-if="stats" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+        <Card>
           <CardHeader class="pb-3">
-            <CardTitle class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Requests</CardTitle>
+            <CardTitle class="text-sm font-medium text-muted-foreground">Total Requests</CardTitle>
           </CardHeader>
           <CardContent>
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.total_requests }}</p>
+            <p class="text-3xl font-bold text-foreground">{{ stats.total_requests }}</p>
           </CardContent>
         </Card>
 
-        <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+        <Card>
           <CardHeader class="pb-3">
-            <CardTitle class="text-sm font-medium text-gray-600 dark:text-gray-400">TTS Requests</CardTitle>
+            <CardTitle class="text-sm font-medium text-muted-foreground">TTS Requests</CardTitle>
           </CardHeader>
           <CardContent>
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.tts_requests }}</p>
+            <p class="text-3xl font-bold text-foreground">{{ stats.tts_requests }}</p>
           </CardContent>
         </Card>
 
-        <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+        <Card>
           <CardHeader class="pb-3">
-            <CardTitle class="text-sm font-medium text-gray-600 dark:text-gray-400">STT Requests</CardTitle>
+            <CardTitle class="text-sm font-medium text-muted-foreground">STT Requests</CardTitle>
           </CardHeader>
           <CardContent>
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.stt_requests }}</p>
+            <p class="text-3xl font-bold text-foreground">{{ stats.stt_requests }}</p>
           </CardContent>
         </Card>
 
-        <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+        <Card>
           <CardHeader class="pb-3">
-            <CardTitle class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Cost (30 days)</CardTitle>
+            <CardTitle class="text-sm font-medium text-muted-foreground">Total Cost (30 days)</CardTitle>
           </CardHeader>
           <CardContent>
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+            <p class="text-3xl font-bold text-foreground">
               {{ formatCurrency(stats.total_cost) }}
             </p>
           </CardContent>
@@ -64,16 +64,16 @@
       </div>
 
       <!-- Recent Activity -->
-      <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+      <Card>
         <CardHeader>
-          <CardTitle class="text-gray-900 dark:text-white">Recent Activity</CardTitle>
+          <CardTitle class="text-foreground">Recent Activity</CardTitle>
         </CardHeader>
         <CardContent>
           <div v-if="recentLogs && recentLogs.length > 0" class="space-y-3">
             <div
               v-for="log in recentLogs"
               :key="log.id"
-              class="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700 last:border-b-0"
+              class="flex items-center justify-between py-3 border-b border-border last:border-b-0"
             >
               <div class="flex items-center space-x-3">
                 <Badge
@@ -82,21 +82,21 @@
                 >
                   {{ log.service_type.toUpperCase() }}
                 </Badge>
-                <span class="text-sm text-gray-600 dark:text-gray-400">
+                <span class="text-sm text-muted-foreground">
                   {{ log.service_type === 'tts' ? `${log.character_count} chars` : `${Math.ceil((log.duration_seconds || 0) / 60)}min` }}
                 </span>
               </div>
               <div class="flex items-center space-x-4">
-                <span class="text-sm font-medium text-gray-900 dark:text-white">
+                <span class="text-sm font-medium text-foreground">
                   {{ formatCurrency(log.cost) }}
                 </span>
-                <span class="text-xs text-gray-500 dark:text-gray-400">
+                <span class="text-xs text-muted-foreground">
                   {{ formatDate(log.created_at) }}
                 </span>
               </div>
             </div>
           </div>
-          <div v-else class="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div v-else class="text-center py-8 text-muted-foreground">
             No recent activity
           </div>
         </CardContent>
