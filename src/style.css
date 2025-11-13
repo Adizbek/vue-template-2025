@@ -9,44 +9,44 @@
     --default-font-family: var(--font-roboto);
 }
 
+
 :root {
-    --background: hsl(45 60% 98%);
-    --foreground: hsl(30 35% 15%);
-    --card: hsl(0 0% 100%);
-    --card-foreground: hsl(30 30% 18%);
-    --popover: hsl(0 0% 100%);
-    --popover-foreground: hsl(30 35% 15%);
-    --primary: hsl(25 95% 53%);
-    --primary-foreground: hsl(0 0% 100%);
-    --secondary: hsl(45 50% 94%);
-    --secondary-foreground: hsl(30 40% 20%);
-    --muted: hsl(45 45% 92%);
-    --muted-foreground: hsl(30 20% 45%);
-    --accent: hsl(35 91% 62%);
-    --accent-foreground: hsl(30 40% 18%);
-    --destructive: hsl(1 64% 58%);
-    --destructive-foreground: hsl(0 0% 100%);
-    --border: hsl(40 35% 87%);
-    --input: hsl(40 30% 89%);
-    --ring: hsl(30 90% 58%);
+  --background: hsl(45 60% 98%);
+  --foreground: hsl(30 35% 15%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(30 30% 18%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(30 35% 15%);
+  --primary: hsl(25 95% 53%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(45 50% 94%);
+  --secondary-foreground: hsl(30 40% 20%);
+  --muted: hsl(45 45% 92%);
+  --muted-foreground: hsl(30 20% 45%);
+  --accent: hsl(35 91% 62%);
+  --accent-foreground: hsl(30 40% 18%);
+  --destructive: hsl(1 64% 58%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(40 35% 87%);
+  --input: hsl(40 30% 89%);
+  --ring: hsl(30 90% 58%);
 
-    --gradient-primary: linear-gradient(135deg, hsl(25 95% 53%), hsl(35 91% 62%));
-    --chart-1: oklch(0.72 0.15 65);
-    --chart-2: oklch(0.75 0.14 85);
-    --chart-3: oklch(0.65 0.12 45);
-    --chart-4: oklch(0.8 0.13 75);
-    --chart-5: oklch(0.85 0.11 55);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0.01 80);
-    --sidebar-foreground: oklch(0.2 0.02 40);
-    --sidebar-primary: oklch(0.65 0.18 45);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0.02 75);
-    --sidebar-accent-foreground: oklch(0.25 0.03 40);
-    --sidebar-border: oklch(0.92 0.01 70);
-    --sidebar-ring: oklch(0.7 0.15 55);
+  --gradient-primary: linear-gradient(135deg, hsl(25 95% 53%), hsl(35 91% 62%));
+  --chart-1: oklch(0.72 0.15 65);
+  --chart-2: oklch(0.75 0.14 85);
+  --chart-3: oklch(0.65 0.12 45);
+  --chart-4: oklch(0.8 0.13 75);
+  --chart-5: oklch(0.85 0.11 55);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0.01 80);
+  --sidebar-foreground: oklch(0.2 0.02 40);
+  --sidebar-primary: oklch(0.65 0.18 45);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0.02 75);
+  --sidebar-accent-foreground: oklch(0.25 0.03 40);
+  --sidebar-border: oklch(0.92 0.01 70);
+  --sidebar-ring: oklch(0.7 0.15 55);
 }
-
 .dark {
     --background: hsl(30 30% 8%);
     --foreground: hsl(45 25% 92%);
@@ -180,10 +180,6 @@
         background: hsl(30 90% 55% / 0.4);
         color: hsl(45 25% 92%);
     }
-
-    /*a {*/
-    /*    @apply text-primary hover:underline;*/
-    /*}*/
 
     /* Scrollbars tinted to match theme and behave consistently on Windows */
     *::-webkit-scrollbar {

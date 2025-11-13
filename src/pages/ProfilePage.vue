@@ -1,45 +1,47 @@
 <template>
   <Layout>
-    <div class="px-4 py-6 sm:px-0">
-      <h1 class="text-2xl font-bold text-gray-900 mb-6">Profile</h1>
+    <div class="space-y-6">
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-foreground">Profile</h1>
+        <p class="text-muted-foreground mt-2">
+          Manage your account settings and preferences
+        </p>
+      </div>
 
-      <div class="bg-white shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Personal Information</CardTitle>
+        </CardHeader>
+        <CardContent>
           <form @submit.prevent="handleSubmit" class="space-y-6">
-            <div>
-              <label for="email" class="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
+            <div class="space-y-2">
+              <Label for="email">Email</Label>
+              <Input
                 id="email"
                 v-model="form.email"
                 type="email"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="Enter your email"
               />
             </div>
 
-            <div>
-              <label for="full_name" class="block text-sm font-medium text-gray-700">
-                Full Name
-              </label>
-              <input
+            <div class="space-y-2">
+              <Label for="full_name">Full Name</Label>
+              <Input
                 id="full_name"
                 v-model="form.full_name"
                 type="text"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="Enter your full name"
               />
             </div>
 
-            <div class="pt-5">
-              <div class="flex justify-end">
-                <Button type="submit" :disabled="isLoading">
-                  {{ isLoading ? 'Saving...' : 'Save Changes' }}
-                </Button>
-              </div>
+            <div class="flex justify-end pt-4">
+              <Button type="submit" :disabled="isLoading">
+                {{ isLoading ? 'Saving...' : 'Save Changes' }}
+              </Button>
             </div>
           </form>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   </Layout>
 </template>
@@ -50,6 +52,9 @@ import { useAuthStore } from '@/stores/auth'
 import apiClient from '@/lib/api'
 import Layout from '@/components/Layout.vue'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { toast } from 'vue-sonner'
 
 const authStore = useAuthStore()
@@ -72,9 +77,12 @@ async function handleSubmit() {
     await apiClient.put('/users/profile', form.value)
     await authStore.fetchUser()
     toast.success('Profile updated successfully')
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Failed to update profile:', error)
-    toast.error(error.response?.data?.detail || 'Failed to update profile')
+    const errorMessage = error && typeof error === 'object' && 'response' in error
+      ? (error as { response?: { data?: { detail?: string } } }).response?.data?.detail
+      : undefined
+    toast.error(errorMessage || 'Failed to update profile')
   } finally {
     isLoading.value = false
   }
