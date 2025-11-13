@@ -1,87 +1,90 @@
 <template>
   <Layout>
-    <div class="px-4 py-6 sm:px-0">
-      <h1 class="text-2xl font-bold text-gray-900 mb-6">Usage Statistics</h1>
+    <div class="space-y-6">
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Usage Statistics</h1>
 
       <!-- Stats Overview -->
-      <div v-if="stats" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-6">
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-          <div class="px-4 py-5 sm:p-6">
-            <dt class="text-sm font-medium text-gray-500 truncate">Total Requests</dt>
-            <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ stats.total_requests }}</dd>
-            <dd class="mt-1 text-sm text-gray-500">{{ formatCurrency(stats.total_cost) }}</dd>
-          </div>
-        </div>
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-          <div class="px-4 py-5 sm:p-6">
-            <dt class="text-sm font-medium text-gray-500 truncate">TTS Usage</dt>
-            <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ stats.tts_requests }}</dd>
-            <dd class="mt-1 text-sm text-gray-500">
+      <div v-if="stats" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+          <CardHeader class="pb-3">
+            <CardTitle class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Requests</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.total_requests }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ formatCurrency(stats.total_cost) }}</p>
+          </CardContent>
+        </Card>
+
+        <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+          <CardHeader class="pb-3">
+            <CardTitle class="text-sm font-medium text-gray-600 dark:text-gray-400">TTS Usage</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.tts_requests }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
               {{ stats.tts_characters.toLocaleString() }} chars · {{ formatCurrency(stats.tts_cost) }}
-            </dd>
-          </div>
-        </div>
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-          <div class="px-4 py-5 sm:p-6">
-            <dt class="text-sm font-medium text-gray-500 truncate">STT Usage</dt>
-            <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ stats.stt_requests }}</dd>
-            <dd class="mt-1 text-sm text-gray-500">
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+          <CardHeader class="pb-3">
+            <CardTitle class="text-sm font-medium text-gray-600 dark:text-gray-400">STT Usage</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.stt_requests }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
               {{ stats.stt_minutes.toFixed(1) }} min · {{ formatCurrency(stats.stt_cost) }}
-            </dd>
-          </div>
-        </div>
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
       <!-- Usage Logs -->
-      <div class="bg-white shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Usage Logs</h3>
-
+      <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+        <CardHeader>
+          <CardTitle class="text-gray-900 dark:text-white">Usage Logs</CardTitle>
+        </CardHeader>
+        <CardContent>
           <div v-if="logs && logs.length > 0" class="space-y-3">
             <div
               v-for="log in logs"
               :key="log.id"
-              class="flex items-center justify-between py-3 border-b last:border-b-0"
+              class="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700 last:border-b-0"
             >
               <div class="flex items-center space-x-4">
-                <span
-                  :class="log.service_type === 'tts' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'"
-                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                >
+                <Badge :variant="log.service_type === 'tts' ? 'default' : 'secondary'">
                   {{ log.service_type.toUpperCase() }}
-                </span>
-                <span
-                  :class="getStatusColor(log.status)"
-                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                >
+                </Badge>
+                <Badge :variant="getStatusVariant(log.status)">
                   {{ log.status }}
-                </span>
-                <div class="text-sm text-gray-600">
+                </Badge>
+                <div class="text-sm text-gray-600 dark:text-gray-400">
                   <span v-if="log.service_type === 'tts'">
                     {{ log.character_count }} chars
-                    <span v-if="log.voice_id" class="text-gray-500">· {{ log.voice_id }}</span>
+                    <span v-if="log.voice_id" class="text-gray-500 dark:text-gray-500">· {{ log.voice_id }}</span>
                   </span>
                   <span v-else>
                     {{ Math.ceil((log.duration_seconds || 0) / 60) }} min
-                    <span v-if="log.language" class="text-gray-500">· {{ log.language }}</span>
+                    <span v-if="log.language" class="text-gray-500 dark:text-gray-500">· {{ log.language }}</span>
                   </span>
                 </div>
               </div>
               <div class="flex items-center space-x-4">
-                <span class="text-sm font-medium text-gray-900">
+                <span class="text-sm font-medium text-gray-900 dark:text-white">
                   {{ formatCurrency(log.cost) }}
                 </span>
-                <span class="text-xs text-gray-500">
+                <span class="text-xs text-gray-500 dark:text-gray-400">
                   {{ formatDate(log.created_at) }}
                 </span>
               </div>
             </div>
           </div>
-          <div v-else class="text-center py-6 text-gray-500">
+          <div v-else class="text-center py-8 text-gray-500 dark:text-gray-400">
             No usage logs yet
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   </Layout>
 </template>
@@ -90,6 +93,8 @@
 import { ref, onMounted } from 'vue'
 import apiClient from '@/lib/api'
 import Layout from '@/components/Layout.vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import type { UsageStats, UsageLog } from '@/types'
 
 const stats = ref<UsageStats | null>(null)
@@ -111,14 +116,14 @@ function formatDate(date: string) {
   })
 }
 
-function getStatusColor(status: string) {
-  const colors: Record<string, string> = {
-    success: 'bg-green-100 text-green-800',
-    failed: 'bg-red-100 text-red-800',
-    rate_limited: 'bg-yellow-100 text-yellow-800',
-    insufficient_balance: 'bg-orange-100 text-orange-800',
+function getStatusVariant(status: string): 'default' | 'secondary' | 'destructive' | 'outline' {
+  const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
+    success: 'default',
+    failed: 'destructive',
+    rate_limited: 'outline',
+    insufficient_balance: 'secondary',
   }
-  return colors[status] || 'bg-gray-100 text-gray-800'
+  return variants[status] || 'secondary'
 }
 
 async function fetchStats() {

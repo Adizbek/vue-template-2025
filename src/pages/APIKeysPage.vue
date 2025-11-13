@@ -1,54 +1,62 @@
 <template>
   <Layout>
-    <div class="px-4 py-6 sm:px-0">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">API Keys</h1>
-        <Button @click="showCreateModal = true">
+    <div class="space-y-6">
+      <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">API Keys</h1>
+        <Button @click="showCreateModal = true" class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
           Create API Key
         </Button>
       </div>
 
-      <div v-if="apiKeys && apiKeys.length > 0" class="bg-white shadow overflow-hidden sm:rounded-md">
-        <ul class="divide-y divide-gray-200">
-          <li v-for="key in apiKeys" :key="key.id" class="px-4 py-4 sm:px-6 hover:bg-gray-50">
+      <div v-if="apiKeys && apiKeys.length > 0" class="grid gap-4">
+        <Card
+          v-for="key in apiKeys"
+          :key="key.id"
+          class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
+        >
+          <CardHeader>
             <div class="flex items-center justify-between">
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center space-x-3">
-                  <h3 class="text-lg font-medium text-gray-900">{{ key.name }}</h3>
-                  <span
-                    :class="key.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                  >
-                    {{ key.is_active ? 'Active' : 'Inactive' }}
-                  </span>
-                </div>
-                <p class="mt-1 text-sm text-gray-500">{{ key.description }}</p>
-                <div class="mt-2 flex items-center space-x-4 text-sm text-gray-500">
-                  <code class="bg-gray-100 px-2 py-1 rounded">{{ key.key_preview }}</code>
-                  <span>Max concurrent: {{ key.max_concurrent_requests }}</span>
-                  <span v-if="key.last_used_at">
-                    Last used: {{ formatDate(key.last_used_at) }}
-                  </span>
-                </div>
+              <div class="flex items-center gap-3">
+                <CardTitle class="text-gray-900 dark:text-white">{{ key.name }}</CardTitle>
+                <Badge :variant="key.is_active ? 'default' : 'secondary'">
+                  {{ key.is_active ? 'Active' : 'Inactive' }}
+                </Badge>
               </div>
-              <div class="flex space-x-2">
+              <div class="flex gap-2">
                 <Button variant="outline" size="sm" @click="viewKey(key)">
                   View
                 </Button>
                 <Button variant="outline" size="sm" @click="editKey(key)">
                   Edit
                 </Button>
-                <Button variant="outline" size="sm" @click="deleteKey(key)">
+                <Button variant="outline" size="sm" @click="deleteKey(key)" class="text-red-600 dark:text-red-400">
                   Delete
                 </Button>
               </div>
             </div>
-          </li>
-        </ul>
+          </CardHeader>
+          <CardContent class="space-y-3">
+            <p class="text-sm text-gray-600 dark:text-gray-400">{{ key.description }}</p>
+            <div class="flex flex-wrap items-center gap-4 text-sm">
+              <code class="bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-md text-gray-900 dark:text-gray-100 font-mono">
+                {{ key.key_preview }}
+              </code>
+              <span class="text-gray-600 dark:text-gray-400">
+                Max concurrent: <span class="font-medium text-gray-900 dark:text-white">{{ key.max_concurrent_requests }}</span>
+              </span>
+              <span v-if="key.last_used_at" class="text-gray-600 dark:text-gray-400">
+                Last used: <span class="font-medium text-gray-900 dark:text-white">{{ formatDate(key.last_used_at) }}</span>
+              </span>
+            </div>
+          </CardContent>
+        </Card>
       </div>
-      <div v-else class="bg-white shadow rounded-lg p-6 text-center text-gray-500">
-        No API keys yet. Create one to get started!
-      </div>
+
+      <Card v-else class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+        <CardContent class="text-center py-12 text-gray-500 dark:text-gray-400">
+          No API keys yet. Create one to get started!
+        </CardContent>
+      </Card>
     </div>
 
     <!-- Create/Edit Modal -->
@@ -68,6 +76,8 @@ import { ref, onMounted } from 'vue'
 import apiClient from '@/lib/api'
 import Layout from '@/components/Layout.vue'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import CreateAPIKeyModal from '@/components/CreateAPIKeyModal.vue'
 import ViewAPIKeyModal from '@/components/ViewAPIKeyModal.vue'
 import type { APIKey } from '@/types'

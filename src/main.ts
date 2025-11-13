@@ -6,6 +6,7 @@ import App from './App.vue'
 import router from './router'
 import './styles.css'
 import { useAuthStore } from './stores/auth'
+import { useThemeStore } from './stores/theme'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -21,4 +22,7 @@ const authStore = useAuthStore()
 if (authStore.accessToken) {
   authStore.fetchUser()
 }
+
+// Initialize theme
+const themeStore = useThemeStore()
 

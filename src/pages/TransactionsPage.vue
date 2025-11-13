@@ -1,50 +1,53 @@
 <template>
   <Layout>
-    <div class="px-4 py-6 sm:px-0">
-      <h1 class="text-2xl font-bold text-gray-900 mb-6">Transactions</h1>
+    <div class="space-y-6">
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Transactions</h1>
 
-      <div v-if="transactions && transactions.length > 0" class="bg-white shadow overflow-hidden sm:rounded-md">
-        <ul class="divide-y divide-gray-200">
-          <li v-for="transaction in transactions" :key="transaction.id" class="px-4 py-4 sm:px-6">
+      <div v-if="transactions && transactions.length > 0" class="grid gap-4">
+        <Card
+          v-for="transaction in transactions"
+          :key="transaction.id"
+          class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800"
+        >
+          <CardContent class="pt-6">
             <div class="flex items-center justify-between">
-              <div>
-                <div class="flex items-center space-x-3">
-                  <span
-                    :class="getTypeColor(transaction.type)"
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                  >
-                    {{ transaction.type.toUpperCase() }}
-                  </span>
-                  <span
-                    :class="getStatusColor(transaction.status)"
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                  >
+              <div class="space-y-2">
+                <div class="flex items-center gap-3">
+                  <Badge :variant="getTypeVariant(transaction.transaction_type)">
+                    {{ transaction.transaction_type.toUpperCase() }}
+                  </Badge>
+                  <Badge :variant="getStatusVariant(transaction.status)">
                     {{ transaction.status }}
-                  </span>
+                  </Badge>
                 </div>
-                <p class="mt-2 text-sm text-gray-600">{{ transaction.description }}</p>
-                <p class="mt-1 text-xs text-gray-500">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  {{ getTransactionDescription(transaction) }}
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-500">
                   {{ formatDate(transaction.created_at) }}
                 </p>
               </div>
               <div class="text-right">
                 <p
-                  :class="transaction.amount >= 0 ? 'text-green-600' : 'text-red-600'"
+                  :class="transaction.amount >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'"
                   class="text-lg font-semibold"
                 >
                   {{ transaction.amount >= 0 ? '+' : '' }}{{ formatCurrency(transaction.amount) }}
                 </p>
-                <p v-if="transaction.payment_method" class="text-sm text-gray-500">
+                <p v-if="transaction.payment_method" class="text-sm text-gray-500 dark:text-gray-400">
                   via {{ transaction.payment_method }}
                 </p>
               </div>
             </div>
-          </li>
-        </ul>
+          </CardContent>
+        </Card>
       </div>
-      <div v-else class="bg-white shadow rounded-lg p-6 text-center text-gray-500">
-        No transactions yet
-      </div>
+
+      <Card v-else class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+        <CardContent class="text-center py-12 text-gray-500 dark:text-gray-400">
+          No transactions yet
+        </CardContent>
+      </Card>
     </div>
   </Layout>
 </template>
@@ -53,6 +56,8 @@
 import { ref, onMounted } from 'vue'
 import apiClient from '@/lib/api'
 import Layout from '@/components/Layout.vue'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import type { Transaction } from '@/types'
 
 const transactions = ref<Transaction[]>([])
@@ -74,23 +79,32 @@ function formatDate(date: string) {
   })
 }
 
-function getTypeColor(type: string) {
-  const colors: Record<string, string> = {
-    topup: 'bg-green-100 text-green-800',
-    usage: 'bg-blue-100 text-blue-800',
-    refund: 'bg-yellow-100 text-yellow-800',
+function getTypeVariant(type: string): 'default' | 'secondary' | 'destructive' | 'outline' {
+  const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
+    topup: 'default',
+    deduction: 'secondary',
+    refund: 'outline',
   }
-  return colors[type] || 'bg-gray-100 text-gray-800'
+  return variants[type] || 'secondary'
 }
 
-function getStatusColor(status: string) {
-  const colors: Record<string, string> = {
-    completed: 'bg-green-100 text-green-800',
-    pending: 'bg-yellow-100 text-yellow-800',
-    failed: 'bg-red-100 text-red-800',
-    cancelled: 'bg-gray-100 text-gray-800',
+function getStatusVariant(status: string): 'default' | 'secondary' | 'destructive' | 'outline' {
+  const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
+    completed: 'default',
+    pending: 'outline',
+    failed: 'destructive',
+    cancelled: 'secondary',
   }
-  return colors[status] || 'bg-gray-100 text-gray-800'
+  return variants[status] || 'secondary'
+}
+
+function getTransactionDescription(transaction: Transaction): string {
+  const typeDescriptions: Record<string, string> = {
+    topup: 'Balance top-up',
+    deduction: 'Service usage charge',
+    refund: 'Refund',
+  }
+  return typeDescriptions[transaction.transaction_type] || 'Transaction'
 }
 
 async function fetchTransactions() {
