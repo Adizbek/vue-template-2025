@@ -1,15 +1,81 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/index',
-      alias: '/',
-      name: 'index',
-      component: () => import('@/pages/IndexPage.vue'),
+      path: '/login',
+      name: 'login',
+      component: () => import('@/pages/LoginPage.vue'),
+      meta: { requiresGuest: true },
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('@/pages/RegisterPage.vue'),
+      meta: { requiresGuest: true },
+    },
+    {
+      path: '/auth/callback',
+      name: 'auth-callback',
+      component: () => import('@/pages/AuthCallbackPage.vue'),
+    },
+    {
+      path: '/',
+      name: 'dashboard',
+      component: () => import('@/pages/DashboardPage.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('@/pages/ProfilePage.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/api-keys',
+      name: 'api-keys',
+      component: () => import('@/pages/APIKeysPage.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/transactions',
+      name: 'transactions',
+      component: () => import('@/pages/TransactionsPage.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/usage',
+      name: 'usage',
+      component: () => import('@/pages/UsagePage.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/playground',
+      name: 'playground',
+      component: () => import('@/pages/PlaygroundPage.vue'),
+      meta: { requiresAuth: true },
     },
   ],
+})
+
+// Navigation guards
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore()
+
+  // Wait for auth initialization
+  if (!authStore.user && authStore.accessToken) {
+    await authStore.fetchUser()
+  }
+
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next({ name: 'login', query: { redirect: to.fullPath } })
+  } else if (to.meta.requiresGuest && authStore.isAuthenticated) {
+    next({ name: 'dashboard' })
+  } else {
+    next()
+  }
 })
 
 export default router
