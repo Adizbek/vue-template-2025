@@ -1,40 +1,39 @@
 <template>
   <Layout>
     <div class="space-y-6">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Transactions</h1>
+      <h1 class="text-3xl font-bold text-foreground">Transactions</h1>
 
       <div v-if="transactions && transactions.length > 0" class="grid gap-4">
         <Card
           v-for="transaction in transactions"
           :key="transaction.id"
-          class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800"
         >
-          <CardContent class="pt-6">
+          <CardContent>
             <div class="flex items-center justify-between">
               <div class="space-y-2">
                 <div class="flex items-center gap-3">
-                  <Badge :variant="getTypeVariant(transaction.transaction_type)">
-                    {{ transaction.transaction_type.toUpperCase() }}
+                  <Badge :variant="getTypeVariant(transaction.type)">
+                    {{ transaction.type.toUpperCase() }}
                   </Badge>
                   <Badge :variant="getStatusVariant(transaction.status)">
-                    {{ transaction.status }}
+                    {{ transaction.status.toUpperCase() }}
                   </Badge>
                 </div>
-                <p class="text-sm text-gray-600 dark:text-gray-400">
+                <p class="text-sm text-muted-foreground">
                   {{ getTransactionDescription(transaction) }}
                 </p>
-                <p class="text-xs text-gray-500 dark:text-gray-500">
+                <p class="text-xs text-muted-foreground/80">
                   {{ formatDate(transaction.created_at) }}
                 </p>
               </div>
               <div class="text-right">
                 <p
-                  :class="transaction.amount >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'"
+                  :class="transaction.amount >= 0 ? 'text-green-600 dark:text-green-400' : 'text-destructive'"
                   class="text-lg font-semibold"
                 >
                   {{ transaction.amount >= 0 ? '+' : '' }}{{ formatCurrency(transaction.amount) }}
                 </p>
-                <p v-if="transaction.payment_method" class="text-sm text-gray-500 dark:text-gray-400">
+                <p v-if="transaction.payment_method" class="text-sm text-muted-foreground">
                   via {{ transaction.payment_method }}
                 </p>
               </div>
@@ -43,8 +42,8 @@
         </Card>
       </div>
 
-      <Card v-else class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
-        <CardContent class="text-center py-12 text-gray-500 dark:text-gray-400">
+      <Card v-else>
+        <CardContent class="text-center py-12 text-muted-foreground">
           No transactions yet
         </CardContent>
       </Card>
@@ -104,7 +103,7 @@ function getTransactionDescription(transaction: Transaction): string {
     deduction: 'Service usage charge',
     refund: 'Refund',
   }
-  return typeDescriptions[transaction.transaction_type] || 'Transaction'
+  return typeDescriptions[transaction.type] || 'Transaction'
 }
 
 async function fetchTransactions() {

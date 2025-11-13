@@ -1,40 +1,42 @@
 <template>
   <Layout>
     <div class="px-4 py-6 sm:px-0">
-      <h1 class="text-2xl font-bold text-gray-900 mb-6">Playground</h1>
+      <h1 class="text-2xl font-bold text-foreground mb-6">Playground</h1>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- TTS Playground -->
-        <div class="bg-white shadow rounded-lg">
+        <div class="bg-card shadow rounded-lg">
           <div class="px-4 py-5 sm:p-6">
-            <h2 class="text-lg font-medium text-gray-900 mb-4">Text-to-Speech</h2>
+            <h2 class="text-lg font-medium text-foreground mb-4">Text-to-Speech</h2>
 
             <form @submit.prevent="handleTTS" class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+                <label class="block text-sm font-medium text-muted-foreground mb-2">
                   Voice
                 </label>
-                <select
-                  v-model="ttsForm.voice_id"
-                  class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option v-for="voice in voices" :key="voice.id" :value="voice.id">
-                    {{ voice.name }} ({{ voice.gender }})
-                  </option>
-                </select>
+                <Select v-model="ttsForm.voice_id">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a voice" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem v-for="voice in voices" :key="voice.id" :value="voice.id">
+                      {{ voice.name }} ({{ voice.gender }})
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+                <label class="block text-sm font-medium text-muted-foreground mb-2">
                   Text
                 </label>
                 <textarea
                   v-model="ttsForm.text"
                   rows="6"
-                  class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  class="block w-full border border-input bg-background rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-ring sm:text-sm"
                   placeholder="Enter text to synthesize..."
                 ></textarea>
-                <p class="mt-1 text-sm text-gray-500">
+                <p class="mt-1 text-sm text-muted-foreground">
                   {{ ttsForm.text.length }} characters
                 </p>
               </div>
@@ -51,34 +53,36 @@
         </div>
 
         <!-- STT Playground -->
-        <div class="bg-white shadow rounded-lg">
+        <div class="bg-card shadow rounded-lg">
           <div class="px-4 py-5 sm:p-6">
-            <h2 class="text-lg font-medium text-gray-900 mb-4">Speech-to-Text</h2>
+            <h2 class="text-lg font-medium text-foreground mb-4">Speech-to-Text</h2>
 
             <form @submit.prevent="handleSTT" class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+                <label class="block text-sm font-medium text-muted-foreground mb-2">
                   Language
                 </label>
-                <select
-                  v-model="sttForm.lang"
-                  class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option value="uz">Uzbek</option>
-                  <option value="en">English</option>
-                  <option value="ru">Russian</option>
-                </select>
+                <Select v-model="sttForm.lang">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a language" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="uz">Uzbek</SelectItem>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="ru">Russian</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+                <label class="block text-sm font-medium text-muted-foreground mb-2">
                   Audio File
                 </label>
-                <input
+                <Input
                   type="file"
                   accept="audio/*"
                   @change="handleFileChange"
-                  class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  class="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
                 />
               </div>
 
@@ -88,11 +92,11 @@
             </form>
 
             <div v-if="sttResult" class="mt-4 space-y-2">
-              <div class="bg-gray-50 p-4 rounded-md">
-                <p class="text-sm font-medium text-gray-700 mb-2">Transcription:</p>
-                <p class="text-sm text-gray-900">{{ sttResult.text }}</p>
+              <div class="bg-muted/50 p-4 rounded-md">
+                <p class="text-sm font-medium text-muted-foreground mb-2">Transcription:</p>
+                <p class="text-sm text-foreground">{{ sttResult.text }}</p>
               </div>
-              <div class="text-xs text-gray-500 space-y-1">
+              <div class="text-xs text-muted-foreground space-y-1">
                 <p>Duration: {{ sttResult.duration_sec.toFixed(2) }}s</p>
                 <p>Processing: {{ sttResult.processing_ms }}ms</p>
                 <p>Model: {{ sttResult.model }}</p>
@@ -102,8 +106,8 @@
         </div>
       </div>
 
-      <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-md p-4">
-        <p class="text-sm text-yellow-800">
+      <div class="mt-6 bg-accent/20 border border-accent/30 rounded-md p-4">
+        <p class="text-sm text-accent-foreground">
           <strong>Note:</strong> Playground uses your actual API balance. Each request will be charged according to your pricing plan.
         </p>
       </div>
@@ -116,6 +120,14 @@ import { ref, onMounted } from 'vue'
 import apiClient from '@/lib/api'
 import Layout from '@/components/Layout.vue'
 import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
 import type { TTSVoice, STTResponse } from '@/types'
 import { toast } from 'vue-sonner'
 

@@ -2,8 +2,8 @@
   <Layout>
     <div class="space-y-6">
       <div class="flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">API Keys</h1>
-        <Button @click="showCreateModal = true" class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
+        <h1 class="text-3xl font-bold text-foreground">API Keys</h1>
+        <Button @click="showCreateModal = true" class="bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90">
           Create API Key
         </Button>
       </div>
@@ -12,12 +12,12 @@
         <Card
           v-for="key in apiKeys"
           :key="key.id"
-          class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
+          class="hover:shadow-lg transition-shadow"
         >
           <CardHeader>
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
-                <CardTitle class="text-gray-900 dark:text-white">{{ key.name }}</CardTitle>
+                <CardTitle class="text-foreground">{{ key.name }}</CardTitle>
                 <Badge :variant="key.is_active ? 'default' : 'secondary'">
                   {{ key.is_active ? 'Active' : 'Inactive' }}
                 </Badge>
@@ -29,31 +29,31 @@
                 <Button variant="outline" size="sm" @click="editKey(key)">
                   Edit
                 </Button>
-                <Button variant="outline" size="sm" @click="deleteKey(key)" class="text-red-600 dark:text-red-400">
+                <Button variant="outline" size="sm" @click="deleteKey(key)" class="text-destructive">
                   Delete
                 </Button>
               </div>
             </div>
           </CardHeader>
           <CardContent class="space-y-3">
-            <p class="text-sm text-gray-600 dark:text-gray-400">{{ key.description }}</p>
+            <p class="text-sm text-muted-foreground">{{ key.description }}</p>
             <div class="flex flex-wrap items-center gap-4 text-sm">
-              <code class="bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-md text-gray-900 dark:text-gray-100 font-mono">
+              <code class="bg-muted px-3 py-1.5 rounded-md text-foreground font-mono">
                 {{ key.key_preview }}
               </code>
-              <span class="text-gray-600 dark:text-gray-400">
-                Max concurrent: <span class="font-medium text-gray-900 dark:text-white">{{ key.max_concurrent_requests }}</span>
+              <span class="text-muted-foreground">
+                Max concurrent: <span class="font-medium text-foreground">{{ key.max_concurrent_requests }}</span>
               </span>
-              <span v-if="key.last_used_at" class="text-gray-600 dark:text-gray-400">
-                Last used: <span class="font-medium text-gray-900 dark:text-white">{{ formatDate(key.last_used_at) }}</span>
+              <span v-if="key.last_used_at" class="text-muted-foreground">
+                Last used: <span class="font-medium text-foreground">{{ formatDate(key.last_used_at) }}</span>
               </span>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <Card v-else class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
-        <CardContent class="text-center py-12 text-gray-500 dark:text-gray-400">
+      <Card v-else>
+        <CardContent class="text-center py-12 text-muted-foreground">
           No API keys yet. Create one to get started!
         </CardContent>
       </Card>

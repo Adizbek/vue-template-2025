@@ -1,39 +1,39 @@
 <template>
   <Layout>
     <div class="space-y-6">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Usage Statistics</h1>
+      <h1 class="text-3xl font-bold text-foreground">Usage Statistics</h1>
 
       <!-- Stats Overview -->
       <div v-if="stats" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+        <Card>
           <CardHeader class="pb-3">
-            <CardTitle class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Requests</CardTitle>
+            <CardTitle class="text-sm font-medium text-muted-foreground">Total Requests</CardTitle>
           </CardHeader>
           <CardContent>
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.total_requests }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ formatCurrency(stats.total_cost) }}</p>
+            <p class="text-3xl font-bold text-foreground">{{ stats.total_requests }}</p>
+            <p class="text-sm text-muted-foreground mt-1">{{ formatCurrency(stats.total_cost) }}</p>
           </CardContent>
         </Card>
 
-        <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+        <Card>
           <CardHeader class="pb-3">
-            <CardTitle class="text-sm font-medium text-gray-600 dark:text-gray-400">TTS Usage</CardTitle>
+            <CardTitle class="text-sm font-medium text-muted-foreground">TTS Usage</CardTitle>
           </CardHeader>
           <CardContent>
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.tts_requests }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p class="text-3xl font-bold text-foreground">{{ stats.tts_requests }}</p>
+            <p class="text-sm text-muted-foreground mt-1">
               {{ stats.tts_characters.toLocaleString() }} chars · {{ formatCurrency(stats.tts_cost) }}
             </p>
           </CardContent>
         </Card>
 
-        <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+        <Card>
           <CardHeader class="pb-3">
-            <CardTitle class="text-sm font-medium text-gray-600 dark:text-gray-400">STT Usage</CardTitle>
+            <CardTitle class="text-sm font-medium text-muted-foreground">STT Usage</CardTitle>
           </CardHeader>
           <CardContent>
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.stt_requests }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p class="text-3xl font-bold text-foreground">{{ stats.stt_requests }}</p>
+            <p class="text-sm text-muted-foreground mt-1">
               {{ stats.stt_minutes.toFixed(1) }} min · {{ formatCurrency(stats.stt_cost) }}
             </p>
           </CardContent>
@@ -41,16 +41,16 @@
       </div>
 
       <!-- Usage Logs -->
-      <Card class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800">
+      <Card>
         <CardHeader>
-          <CardTitle class="text-gray-900 dark:text-white">Usage Logs</CardTitle>
+          <CardTitle class="text-foreground">Usage Logs</CardTitle>
         </CardHeader>
         <CardContent>
           <div v-if="logs && logs.length > 0" class="space-y-3">
             <div
               v-for="log in logs"
               :key="log.id"
-              class="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700 last:border-b-0"
+              class="flex items-center justify-between py-3 border-b border-border last:border-b-0"
             >
               <div class="flex items-center space-x-4">
                 <Badge :variant="log.service_type === 'tts' ? 'default' : 'secondary'">
@@ -59,28 +59,28 @@
                 <Badge :variant="getStatusVariant(log.status)">
                   {{ log.status }}
                 </Badge>
-                <div class="text-sm text-gray-600 dark:text-gray-400">
+                <div class="text-sm text-muted-foreground">
                   <span v-if="log.service_type === 'tts'">
                     {{ log.character_count }} chars
-                    <span v-if="log.voice_id" class="text-gray-500 dark:text-gray-500">· {{ log.voice_id }}</span>
+                    <span v-if="log.voice_id" class="text-muted-foreground/80">· {{ log.voice_id }}</span>
                   </span>
                   <span v-else>
                     {{ Math.ceil((log.duration_seconds || 0) / 60) }} min
-                    <span v-if="log.language" class="text-gray-500 dark:text-gray-500">· {{ log.language }}</span>
+                    <span v-if="log.language" class="text-muted-foreground/80">· {{ log.language }}</span>
                   </span>
                 </div>
               </div>
               <div class="flex items-center space-x-4">
-                <span class="text-sm font-medium text-gray-900 dark:text-white">
+                <span class="text-sm font-medium text-foreground">
                   {{ formatCurrency(log.cost) }}
                 </span>
-                <span class="text-xs text-gray-500 dark:text-gray-400">
+                <span class="text-xs text-muted-foreground">
                   {{ formatDate(log.created_at) }}
                 </span>
               </div>
             </div>
           </div>
-          <div v-else class="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div v-else class="text-center py-8 text-muted-foreground">
             No usage logs yet
           </div>
         </CardContent>

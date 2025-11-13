@@ -22,7 +22,7 @@ export interface APIKey {
 export interface Transaction {
   id: string
   user_id: string
-  transaction_type: 'topup' | 'deduction' | 'refund'
+  type: 'topup' | 'deduction' | 'refund'
   amount: number
   balance_before: number
   balance_after: number
