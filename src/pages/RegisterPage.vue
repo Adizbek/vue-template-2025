@@ -1,16 +1,16 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 py-12 px-4 sm:px-6 lg:px-8">
-    <Card class="max-w-md w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-gray-200 dark:border-gray-800 shadow-2xl">
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 dark:from-background dark:via-background/80 dark:to-primary/15 py-12 px-4 sm:px-6 lg:px-8">
+    <Card class="max-w-md w-full bg-card/95 border border-border/80 shadow-xl shadow-black/10 dark:shadow-black/30 backdrop-blur-lg">
       <CardHeader class="space-y-1 text-center">
-        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+        <h1 class="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
           NeuronAI
         </h1>
-        <CardTitle class="text-2xl text-gray-900 dark:text-white">
+        <CardTitle class="text-2xl text-foreground">
           Create your account
         </CardTitle>
-        <p class="text-sm text-gray-600 dark:text-gray-400">
+        <p class="text-sm text-muted-foreground">
           Or
-          <router-link to="/login" class="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
+          <router-link to="/login" class="font-medium text-primary hover:text-primary/80">
             sign in to existing account
           </router-link>
         </p>
@@ -19,54 +19,48 @@
       <CardContent class="space-y-6">
         <form class="space-y-4" @submit.prevent="handleSubmit">
           <div class="space-y-2">
-            <label for="full-name" class="text-sm font-medium text-gray-900 dark:text-white">
-              Full Name
-            </label>
-            <input
+            <Label for="full-name">Full Name</Label>
+            <Input
               id="full-name"
               v-model="form.full_name"
               type="text"
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              autocomplete="name"
               placeholder="Enter your full name"
             />
           </div>
 
           <div class="space-y-2">
-            <label for="email" class="text-sm font-medium text-gray-900 dark:text-white">
-              Email address
-            </label>
-            <input
+            <Label for="email">Email address</Label>
+            <Input
               id="email"
               v-model="form.email"
               type="email"
               required
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              autocomplete="email"
               placeholder="Enter your email"
             />
           </div>
 
           <div class="space-y-2">
-            <label for="password" class="text-sm font-medium text-gray-900 dark:text-white">
-              Password
-            </label>
-            <input
+            <Label for="password">Password</Label>
+            <Input
               id="password"
               v-model="form.password"
               type="password"
               required
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              autocomplete="new-password"
               placeholder="Create a password"
             />
           </div>
 
-          <div v-if="error" class="text-red-600 dark:text-red-400 text-sm text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-md">
+          <div v-if="error" class="text-sm text-destructive-foreground bg-destructive/15 border border-destructive/30 rounded-md px-3 py-2 text-center">
             {{ error }}
           </div>
 
           <Button
             type="submit"
             :disabled="isLoading"
-            class="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium"
+            class="w-full bg-gradient-to-r from-primary to-accent text-primary-foreground font-medium shadow-sm hover:shadow-md"
           >
             {{ isLoading ? 'Creating account...' : 'Create account' }}
           </Button>
@@ -77,7 +71,7 @@
             <Separator />
           </div>
           <div class="relative flex justify-center text-xs uppercase">
-            <span class="bg-white dark:bg-gray-900 px-2 text-gray-500 dark:text-gray-400">
+            <span class="bg-card px-2 text-muted-foreground">
               Or continue with
             </span>
           </div>
@@ -113,6 +107,8 @@ import { useAuthStore } from '@/stores/auth'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 const router = useRouter()
 const authStore = useAuthStore()
