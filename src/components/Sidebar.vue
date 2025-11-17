@@ -2,7 +2,6 @@
 import { cn, formatCurrency, getUserInitials } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
-  BarChart2,
   ChevronDown,
   CreditCard,
   KeyRound,
@@ -34,8 +33,7 @@ const router = useRouter()
 const navigationItems = [
   { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { path: '/api-keys', icon: KeyRound, label: 'API Keys' },
-  { path: '/usage', icon: BarChart2, label: 'Usage' },
-  { path: '/transactions', icon: CreditCard, label: 'Transactions' },
+  { path: '/billing', icon: CreditCard, label: 'Billing' },
 ]
 
 const playgroundItems = [

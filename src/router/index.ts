@@ -40,16 +40,18 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/transactions',
-      name: 'transactions',
-      component: () => import('@/pages/TransactionsPage.vue'),
+      path: '/billing',
+      name: 'billing',
+      component: () => import('@/pages/BillingPage.vue'),
       meta: { requiresAuth: true },
     },
     {
+      path: '/transactions',
+      redirect: { name: 'billing', query: { tab: 'transactions' } },
+    },
+    {
       path: '/usage',
-      name: 'usage',
-      component: () => import('@/pages/UsagePage.vue'),
-      meta: { requiresAuth: true },
+      redirect: { name: 'billing', query: { tab: 'usage' } },
     },
     {
       path: '/playground',
