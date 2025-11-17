@@ -62,3 +62,31 @@ export interface UsageStats {
   stt_cost: number
 }
 
+export interface TTSVoice {
+  id: string
+  name: string
+  description: string
+  language: string
+  gender: string
+}
+
+export interface STTSegment {
+  start: number
+  end: number
+  text: string
+}
+
+export interface STTResponse {
+  request_id: string
+  language: string
+  duration_sec: number
+  text: string
+  segments: STTSegment[]
+  usage_seconds: number
+  billed_seconds: number
+  model: string
+  device: string
+  device_name: string
+  processing_ms: number
+  rtf: number
+}

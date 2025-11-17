@@ -8,9 +8,10 @@ import {
   KeyRound,
   LayoutDashboard,
   LogOut,
-  Play,
   Settings,
   Sun,
+  Play,
+  Mic,
 } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useThemeStore } from '@/stores/theme'
@@ -32,10 +33,14 @@ const router = useRouter()
 
 const navigationItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/playground', icon: Play, label: 'Playground' },
   { path: '/api-keys', icon: KeyRound, label: 'API Keys' },
   { path: '/usage', icon: BarChart2, label: 'Usage' },
   { path: '/transactions', icon: CreditCard, label: 'Transactions' },
+]
+
+const playgroundItems = [
+  { path: '/playground/tts', icon: Play, label: 'TTS Playground' },
+  { path: '/playground/stt', icon: Mic, label: 'STT Playground' },
 ]
 
 const handleLogout = async () => {
@@ -88,15 +93,46 @@ const handleLogout = async () => {
             </div>
           </router-link>
         </nav>
+        <div class="px-6 pt-4">
+          <p class="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+            Playground
+          </p>
+        </div>
+        <nav class="grid items-start px-4 text-sm font-medium">
+          <router-link
+            v-for="item in playgroundItems"
+            :key="item.path"
+            v-slot="{ isActive }"
+            :to="item.path"
+          >
+            <div
+              :class="[
+                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all mb-1 ml-2',
+                isActive
+                  ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md border border-transparent'
+                  : 'text-foreground hover:bg-muted/50',
+              ]"
+            >
+              <component
+                class="shrink-0 size-4"
+                :is="item.icon"
+                :class="[isActive ? 'text-primary-foreground' : 'text-foreground']"
+              />
+              <span>{{ item.label }}</span>
+            </div>
+          </router-link>
+        </nav>
         <div class="mx-3 my-4">
           <Card
-            class="bg-gradient-to-br from-primary/10 to-accent/10 border-primary/20 backdrop-blur-sm"
+            class="bg-gradient-to-br from-primary/10 to-accent/10 border-primary/30 backdrop-blur-sm shadow-lg shadow-primary/20 ring-1 ring-primary/20"
           >
             <CardHeader class="pb-3">
-              <CardTitle class="text-sm font-medium text-muted-foreground"> Balance </CardTitle>
+              <CardTitle class="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Balance
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div class="text-2xl font-bold text-foreground">
+              <div class="text-3xl font-black tracking-tight text-foreground">
                 {{ formatCurrency(authStore.user?.balance || 0) }}
               </div>
             </CardContent>

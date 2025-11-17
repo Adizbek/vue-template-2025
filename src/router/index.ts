@@ -53,8 +53,18 @@ const router = createRouter({
     },
     {
       path: '/playground',
-      name: 'playground',
-      component: () => import('@/pages/PlaygroundPage.vue'),
+      redirect: { name: 'playground-tts' },
+    },
+    {
+      path: '/playground/tts',
+      name: 'playground-tts',
+      component: () => import('@/pages/TTSPlaygroundPage.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/playground/stt',
+      name: 'playground-stt',
+      component: () => import('@/pages/STTPlaygroundPage.vue'),
       meta: { requiresAuth: true },
     },
   ],
