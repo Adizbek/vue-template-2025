@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { Copy } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { toast } from 'vue-sonner'
+import { useClipboard } from '@vueuse/core'
 
 const props = defineProps<{
   code: string
@@ -10,13 +11,18 @@ const props = defineProps<{
 }>()
 
 const copying = ref(false)
+const { copy, isSupported } = useClipboard()
 
 async function copyCode() {
   if (copying.value) return
+  if (!isSupported.value) {
+    toast.error('Clipboard not supported in this browser')
+    return
+  }
 
   copying.value = true
   try {
-    await navigator.clipboard.writeText(props.code)
+    await copy(props.code)
     toast.success('Snippet copied to clipboard')
   } catch (error) {
     console.error('Failed to copy snippet', error)

@@ -51,12 +51,11 @@
 
               <div>
                 <label class="block text-sm font-medium text-muted-foreground mb-2"> Text </label>
-                <textarea
+                <Textarea
                   v-model="ttsForm.text"
-                  class="block w-full border border-input bg-background rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-ring sm:text-sm"
                   placeholder="Enter text to synthesize..."
                   rows="6"
-                ></textarea>
+                />
                 <p class="mt-1 text-sm text-muted-foreground">
                   {{ ttsForm.text.length }} characters
                 </p>
@@ -125,6 +124,7 @@ import Layout from '@/components/Layout.vue'
 import CodeSnippet from '@/components/CodeSnippet.vue'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Textarea } from '@/components/ui/textarea'
 import {
   Select,
   SelectContent,

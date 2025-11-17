@@ -32,7 +32,7 @@ const themeStore = useThemeStore()
 const router = useRouter()
 
 const navigationItems = [
-  { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { path: '/api-keys', icon: KeyRound, label: 'API Keys' },
   { path: '/usage', icon: BarChart2, label: 'Usage' },
   { path: '/transactions', icon: CreditCard, label: 'Transactions' },

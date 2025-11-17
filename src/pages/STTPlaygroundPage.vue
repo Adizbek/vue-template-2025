@@ -4,7 +4,8 @@
       <div class="flex flex-col gap-2">
         <h1 class="text-2xl font-bold text-foreground">Speech-to-Text Playground</h1>
         <p class="text-sm text-muted-foreground">
-          Upload audio and get instant transcripts. We charge per processed minute using your API balance.
+          Upload audio and get instant transcripts. We charge per processed minute using your API
+          balance.
         </p>
       </div>
 
@@ -14,13 +15,16 @@
             <div>
               <h2 class="text-lg font-medium text-foreground mb-1">Transcribe Audio</h2>
               <p class="text-sm text-muted-foreground">
-                Choose a language, upload your audio file, and we will return the transcript plus timing details.
+                Choose a language, upload your audio file, and we will return the transcript plus
+                timing details.
               </p>
             </div>
 
-            <form @submit.prevent="handleSTT" class="space-y-4">
+            <form class="space-y-4" @submit.prevent="handleSTT">
               <div>
-                <label class="block text-sm font-medium text-muted-foreground mb-2"> API Key </label>
+                <label class="block text-sm font-medium text-muted-foreground mb-2">
+                  API Key
+                </label>
                 <Select v-model="selectedApiKeyId">
                   <SelectTrigger>
                     <SelectValue placeholder="Select an API key" />
@@ -53,32 +57,58 @@
                 <label class="block text-sm font-medium text-muted-foreground mb-2">
                   Audio File
                 </label>
-                <Input
-                  type="file"
+                <FilePicker
+                  :file="sttFile"
                   accept="audio/*"
-                  @change="handleFileChange"
-                  class="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                  button-text="Select audio file"
+                  change-button-text="Change audio file"
+                  empty-text="No file selected yet"
+                  @update:file="onFileSelected"
                 />
-                <p v-if="sttFile" class="text-xs text-muted-foreground mt-1">
-                  {{ sttFile.name }} ({{ Math.round(sttFile.size / 1024) }} KB)
-                </p>
               </div>
 
-              <Button type="submit" :disabled="sttLoading || !sttFile" class="w-full">
+              <Button :disabled="sttLoading || !sttFile" class="w-full" type="submit">
                 {{ sttLoading ? 'Transcribing...' : 'Transcribe Audio' }}
               </Button>
             </form>
 
-            <div v-if="sttResult" class="mt-4 space-y-3">
-              <div class="bg-muted/50 p-4 rounded-md">
-                <p class="text-sm font-medium text-muted-foreground mb-2">Transcription:</p>
-                <p class="text-sm text-foreground whitespace-pre-line">{{ sttResult.text }}</p>
-              </div>
-              <div class="text-xs text-muted-foreground grid grid-cols-2 gap-2">
-                <p><span class="font-medium text-foreground">Duration:</span> {{ sttResult.duration_sec.toFixed(2) }}s</p>
-                <p><span class="font-medium text-foreground">Billed Seconds:</span> {{ sttResult.billed_seconds }}</p>
-                <p><span class="font-medium text-foreground">Processing:</span> {{ sttResult.processing_ms }}ms</p>
-                <p><span class="font-medium text-foreground">Model:</span> {{ sttResult.model }}</p>
+            <div v-if="sttResult" class="mt-4">
+              <div class="bg-muted/30 border border-border/60 p-4 rounded-md space-y-4">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div class="space-y-1">
+                    <p class="text-sm font-medium text-muted-foreground">Transcription</p>
+                    <p class="text-sm text-foreground whitespace-pre-line">{{ sttResult.text }}</p>
+                  </div>
+                  <Button
+                    class="self-start gap-1.5"
+                    size="sm"
+                    variant="secondary"
+                    @click="copyTranscription"
+                  >
+                    <Copy class="h-4 w-4" />
+                    Copy
+                  </Button>
+                </div>
+                <div
+                  class="pt-2 border-t border-border/50 text-xs text-muted-foreground grid grid-cols-2 sm:grid-cols-4 gap-3"
+                >
+                  <p class="flex flex-col gap-0.5">
+                    <span class="font-medium text-foreground">Duration</span>
+                    <span>{{ sttResult.duration_sec.toFixed(2) }}s</span>
+                  </p>
+                  <p class="flex flex-col gap-0.5">
+                    <span class="font-medium text-foreground">Billed</span>
+                    <span>{{ sttResult.billed_seconds }}s</span>
+                  </p>
+                  <p class="flex flex-col gap-0.5">
+                    <span class="font-medium text-foreground">Processing</span>
+                    <span>{{ sttResult.processing_ms }}ms</span>
+                  </p>
+                  <p class="flex flex-col gap-0.5">
+                    <span class="font-medium text-foreground">Cost</span>
+                    <span>{{ sttCost !== null ? formatCurrency(sttCost) : '—' }}</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -93,35 +123,52 @@
                   Authenticate with your API key and send multipart form data with your audio file.
                 </p>
               </div>
-              <Badge variant="secondary" class="uppercase">STT</Badge>
+              <Badge class="uppercase" variant="secondary">STT</Badge>
             </div>
             <ol class="list-decimal list-inside text-sm text-foreground space-y-1">
               <li>Create or copy an API key from the API Keys page and select it above.</li>
-              <li>Send a <code class="px-1 py-0.5 rounded bg-muted text-xs">POST</code> request to <code class="px-1 py-0.5 rounded bg-muted text-xs">/api/v1/stt/transcribe</code>.</li>
-              <li>Attach your audio file as <code class="px-1 py-0.5 rounded bg-muted text-xs">file</code> and optional <code class="px-1 py-0.5 rounded bg-muted text-xs">lang</code>.</li>
+              <li>
+                Send a <code class="px-1 py-0.5 rounded bg-muted text-xs">POST</code> request to
+                <code class="px-1 py-0.5 rounded bg-muted text-xs">/api/v1/stt/transcribe</code>.
+              </li>
+              <li>
+                Attach your audio file as
+                <code class="px-1 py-0.5 rounded bg-muted text-xs">file</code> and optional
+                <code class="px-1 py-0.5 rounded bg-muted text-xs">lang</code>.
+              </li>
               <li>Receive the transcript with timing metadata and billable seconds.</li>
             </ol>
             <CodeSnippet :code="sttCurlSnippet" label="cURL example" />
             <div class="text-xs text-muted-foreground space-y-1">
-              <p>Pricing is per rounded-up minute. We refresh your balance after each transcription.</p>
-              <p>Responses include <code class="px-1 py-0.5 rounded bg-muted text-[11px]">duration_sec</code>, <code class="px-1 py-0.5 rounded bg-muted text-[11px]">billed_seconds</code>, and <code class="px-1 py-0.5 rounded bg-muted text-[11px]">request_id</code> for audit tracking.</p>
+              <p>
+                Pricing is per rounded-up minute. We refresh your balance after each transcription.
+              </p>
+              <p>
+                Responses include
+                <code class="px-1 py-0.5 rounded bg-muted text-[11px]">duration_sec</code>,
+                <code class="px-1 py-0.5 rounded bg-muted text-[11px]">billed_seconds</code>, and
+                <code class="px-1 py-0.5 rounded bg-muted text-[11px]">request_id</code> for audit
+                tracking.
+              </p>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </Layout>
 </template>
 
-<script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+<script lang="ts" setup>
+import { computed, onMounted, ref } from 'vue'
 import { toast } from 'vue-sonner'
+import { Copy } from 'lucide-vue-next'
+import { useClipboard } from '@vueuse/core'
 import apiClient from '@/lib/api'
 import Layout from '@/components/Layout.vue'
 import CodeSnippet from '@/components/CodeSnippet.vue'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import FilePicker from '@/components/FilePicker.vue'
 import {
   Select,
   SelectContent,
@@ -129,7 +176,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
 import type { APIKey, STTResponse } from '@/types'
 import { formatCurrency } from '@/lib/utils'
 import { useBalanceQuery } from '@/composables/useBalanceQuery'
@@ -142,9 +188,11 @@ const sttForm = ref({
 const sttFile = ref<File | null>(null)
 const sttLoading = ref(false)
 const sttResult = ref<STTResponse | null>(null)
+const sttCost = ref<number | null>(null)
+const { copy, isSupported } = useClipboard()
 
 const selectedApiKey = computed(() =>
-  apiKeys.value.find((key) => key.id === selectedApiKeyId.value)
+  apiKeys.value.find((key) => key.id === selectedApiKeyId.value),
 )
 
 const sttCurlSnippet = computed(() => {
@@ -171,11 +219,8 @@ async function fetchApiKeys() {
   }
 }
 
-function handleFileChange(event: Event) {
-  const target = event.target as HTMLInputElement
-  if (target.files && target.files[0]) {
-    sttFile.value = target.files[0]
-  }
+function onFileSelected(file: File | null) {
+  sttFile.value = file
 }
 
 async function handleSTT() {
@@ -202,8 +247,6 @@ async function handleSTT() {
       },
     })
 
-    sttResult.value = data
-
     let refreshedBalance: number | undefined
     try {
       const { data: balanceData } = await refetchBalance()
@@ -215,14 +258,36 @@ async function handleSTT() {
     const updatedBalance = refreshedBalance ?? startingBalance
     const calculatedCost = Math.max(0, startingBalance - updatedBalance)
 
-    toast.success(
-      `Audio transcribed successfully. Cost: ${formatCurrency(calculatedCost)}`
-    )
+    sttResult.value = data
+    sttCost.value = calculatedCost
+
+    toast.success(`Audio transcribed successfully. Cost: ${formatCurrency(calculatedCost)}`)
   } catch (error: any) {
     console.error('STT failed:', error)
     toast.error(error.response?.data?.detail || 'Failed to transcribe audio')
   } finally {
     sttLoading.value = false
+  }
+}
+
+async function copyTranscription() {
+  const text = sttResult.value?.text
+  if (!text) {
+    toast.error('Nothing to copy yet')
+    return
+  }
+
+  if (!isSupported.value) {
+    toast.error('Clipboard not supported in this browser')
+    return
+  }
+
+  try {
+    await copy(text)
+    toast.success('Transcription copied to clipboard')
+  } catch (error) {
+    console.error('Copy failed', error)
+    toast.error('Failed to copy transcription')
   }
 }
 

@@ -11,77 +11,77 @@
 
 
 :root {
-  --background: hsl(45 60% 98%);
-  --foreground: hsl(30 35% 15%);
+  --background: hsl(38 80% 98%);
+  --foreground: hsl(28 36% 14%);
   --card: hsl(0 0% 100%);
-  --card-foreground: hsl(30 30% 18%);
+  --card-foreground: hsl(28 32% 18%);
   --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(30 35% 15%);
-  --primary: hsl(25 95% 53%);
+  --popover-foreground: hsl(28 36% 14%);
+  --primary: hsl(26 98% 56%);
   --primary-foreground: hsl(0 0% 100%);
-  --secondary: hsl(45 45% 95%);
-  --secondary-foreground: hsl(30 38% 22%);
-  --muted: hsl(42 32% 93%);
-  --muted-foreground: hsl(32 24% 42%);
-  --accent: hsl(35 88% 64%);
-  --accent-foreground: hsl(28 36% 16%);
-  --destructive: hsl(1 64% 58%);
+  --secondary: hsl(34 70% 95%);
+  --secondary-foreground: hsl(26 36% 20%);
+  --muted: hsl(32 42% 92%);
+  --muted-foreground: hsl(26 26% 42%);
+  --accent: hsl(30 96% 60%);
+  --accent-foreground: hsl(24 40% 16%);
+  --destructive: hsl(1 68% 58%);
   --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(40 30% 88%);
-  --input: hsl(40 28% 89%);
-  --ring: hsl(30 90% 60%);
+  --border: hsl(36 34% 88%);
+  --input: hsl(36 32% 89%);
+  --ring: hsl(26 98% 58%);
 
-  --gradient-primary: linear-gradient(135deg, hsl(25 95% 53%), hsl(35 91% 62%));
-  --chart-1: oklch(0.72 0.15 65);
-  --chart-2: oklch(0.75 0.14 85);
-  --chart-3: oklch(0.65 0.12 45);
-  --chart-4: oklch(0.8 0.13 75);
-  --chart-5: oklch(0.85 0.11 55);
+  --gradient-primary: linear-gradient(135deg, hsl(26 98% 56%), hsl(32 96% 62%));
+  --chart-1: oklch(0.78 0.2 50);
+  --chart-2: oklch(0.8 0.18 65);
+  --chart-3: oklch(0.7 0.16 40);
+  --chart-4: oklch(0.82 0.18 55);
+  --chart-5: oklch(0.86 0.17 70);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0.01 80);
-  --sidebar-foreground: oklch(0.2 0.02 40);
-  --sidebar-primary: oklch(0.65 0.18 45);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0.02 75);
-  --sidebar-accent-foreground: oklch(0.25 0.03 40);
-  --sidebar-border: oklch(0.92 0.01 70);
-  --sidebar-ring: oklch(0.7 0.15 55);
+  --sidebar: oklch(0.985 0.02 78);
+  --sidebar-foreground: oklch(0.22 0.04 38);
+  --sidebar-primary: oklch(0.7 0.22 50);
+  --sidebar-primary-foreground: oklch(0.985 0.01 0);
+  --sidebar-accent: oklch(0.97 0.03 72);
+  --sidebar-accent-foreground: oklch(0.26 0.04 38);
+  --sidebar-border: oklch(0.93 0.02 68);
+  --sidebar-ring: oklch(0.74 0.2 52);
 }
 .dark {
-    --background: hsl(28 24% 12%);
-    --foreground: hsl(40 24% 95%);
-    --card: hsl(28 22% 16%);
-    --card-foreground: hsl(40 24% 96%);
-    --popover: hsl(28 22% 18%);
-    --popover-foreground: hsl(40 24% 96%);
-    --primary: hsl(28 94% 68%);
-    --primary-foreground: hsl(26 32% 12%);
-    --secondary: hsl(28 18% 26%);
-    --secondary-foreground: hsl(38 24% 93%);
-    --muted: hsl(28 14% 30%);
-    --muted-foreground: hsl(36 16% 78%);
-    --accent: hsl(35 87% 62%);
-    --accent-foreground: hsl(30 30% 12%);
+    --background: hsl(22 22% 10%);
+    --foreground: hsl(38 26% 95%);
+    --card: hsl(24 24% 14%);
+    --card-foreground: hsl(38 26% 97%);
+    --popover: hsl(24 24% 16%);
+    --popover-foreground: hsl(38 26% 97%);
+    --primary: hsl(28 98% 68%);
+    --primary-foreground: hsl(22 30% 10%);
+    --secondary: hsl(24 24% 24%);
+    --secondary-foreground: hsl(36 24% 92%);
+    --muted: hsl(22 18% 28%);
+    --muted-foreground: hsl(34 20% 80%);
+    --accent: hsl(30 98% 64%);
+    --accent-foreground: hsl(24 32% 12%);
     --destructive: hsl(2 70% 58%);
     --destructive-foreground: hsl(0 0% 100%);
-    --border: hsl(28 14% 32%);
-    --input: hsl(28 14% 32%);
-    --ring: hsl(28 94% 70%);
+    --border: hsl(22 18% 30%);
+    --input: hsl(22 18% 30%);
+    --ring: hsl(28 98% 70%);
 
-    --gradient-primary: linear-gradient(135deg, hsl(26 96% 60%), hsl(35 90% 66%));
-    --chart-1: oklch(0.74 0.18 55);
-    --chart-2: oklch(0.78 0.16 70);
-    --chart-3: oklch(0.66 0.14 40);
-    --chart-4: oklch(0.7 0.15 80);
-    --chart-5: oklch(0.76 0.17 60);
-    --sidebar: oklch(0.34 0.03 45);
-    --sidebar-foreground: oklch(0.93 0.02 75);
-    --sidebar-primary: oklch(0.73 0.18 55);
-    --sidebar-primary-foreground: oklch(0.97 0.01 70);
-    --sidebar-accent: oklch(0.4 0.04 50);
-    --sidebar-accent-foreground: oklch(0.93 0.02 75);
-    --sidebar-border: oklch(0.44 0.03 48);
-    --sidebar-ring: oklch(0.72 0.16 58);
+    --gradient-primary: linear-gradient(135deg, hsl(28 98% 68%), hsl(32 96% 64%), hsl(24 94% 60%));
+    --chart-1: oklch(0.78 0.24 44);
+    --chart-2: oklch(0.8 0.22 58);
+    --chart-3: oklch(0.7 0.2 35);
+    --chart-4: oklch(0.74 0.22 68);
+    --chart-5: oklch(0.76 0.22 52);
+    --sidebar: oklch(0.34 0.05 44);
+    --sidebar-foreground: oklch(0.95 0.04 74);
+    --sidebar-primary: oklch(0.78 0.24 50);
+    --sidebar-primary-foreground: oklch(0.97 0.02 68);
+    --sidebar-accent: oklch(0.44 0.06 48);
+    --sidebar-accent-foreground: oklch(0.95 0.04 74);
+    --sidebar-border: oklch(0.46 0.05 46);
+    --sidebar-ring: oklch(0.76 0.22 52);
 }
 
 @theme inline {
@@ -155,30 +155,30 @@
     body {
         @apply bg-background text-foreground;
         background-image:
-            radial-gradient(circle at 12% 20%, hsl(35 85% 75% / 0.12), transparent 45%),
-            radial-gradient(circle at 88% 10%, hsl(45 90% 80% / 0.15), transparent 40%),
-            linear-gradient(180deg, hsl(45 60% 98% / 0.95), hsl(40 55% 96% / 0.95));
+            radial-gradient(circle at 12% 20%, hsl(30 98% 78% / 0.18), transparent 45%),
+            radial-gradient(circle at 88% 10%, hsl(36 96% 82% / 0.2), transparent 40%),
+            linear-gradient(180deg, hsl(38 80% 98% / 0.95), hsl(34 72% 96% / 0.95));
         background-attachment: fixed;
         background-size: cover;
     }
 
     .dark body {
         background-image:
-            radial-gradient(circle at 15% 20%, hsl(30 52% 22% / 0.34), transparent 45%),
-            radial-gradient(circle at 85% 0%, hsl(26 52% 26% / 0.3), transparent 40%),
-            linear-gradient(180deg, hsl(28 26% 14%), hsl(28 22% 10%));
+            radial-gradient(circle at 15% 20%, hsl(28 92% 28% / 0.48), transparent 46%),
+            radial-gradient(circle at 85% 0%, hsl(22 74% 30% / 0.38), transparent 44%),
+            linear-gradient(180deg, hsl(22 22% 13%), hsl(20 20% 9%));
         background-attachment: fixed;
         background-size: cover;
     }
 
     ::selection {
-        background: hsl(35 85% 70%);
-        color: hsl(30 40% 15%);
+        background: hsl(28 98% 68%);
+        color: hsl(26 34% 12%);
     }
 
     .dark ::selection {
-        background: hsl(30 92% 58% / 0.42);
-        color: hsl(45 25% 95%);
+        background: hsl(28 98% 65% / 0.58);
+        color: hsl(38 26% 95%);
     }
 
     /* Scrollbars tinted to match theme and behave consistently on Windows */

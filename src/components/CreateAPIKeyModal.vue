@@ -30,13 +30,12 @@
 
         <div class="space-y-2">
           <Label for="api-key-description">Description</Label>
-          <textarea
+          <Textarea
             id="api-key-description"
             v-model="form.description"
             rows="3"
-            class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-ring/60"
             placeholder="Optional description"
-          ></textarea>
+          />
         </div>
 
         <div class="space-y-2">
@@ -83,6 +82,7 @@ import apiClient from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'vue-sonner'
 import type { APIKey } from '@/types'
 
